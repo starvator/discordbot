@@ -7,3 +7,4 @@ token from bot section on https://discordapp.com/developers/applications/me
 
 host on https://glitch.com
 
+https://anidiotsguide_old.gitbooks.io/discord-js-bot-guide/content/other-guides/hosting-on-glitchcom.html
