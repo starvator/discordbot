@@ -5,6 +5,7 @@ const bot = new Eris(process.env.SECRET);   // Replace SECRET in .env with your 
  
 bot.on('ready', () => {                                // When the bot is ready
     console.log('Ready!');                             // Log "Ready!"
+    bot.editStatus("online",{name:"you", type:3});
 });
  
 bot.on('messageCreate', (msg) => {                     // When a message is created
@@ -22,7 +23,7 @@ bot.on('presenceUpdate', (member) => {
         if (user.game != null){
           game = user.game.name;
         }
-        console.log(user.username+" "+user.status+" "+game+ " "+ user.id);
+        console.log(user.username+" "+user.status+" "+game+ " "+ user.id+"xxx"+user.game);
       }
     });
 });
@@ -30,7 +31,7 @@ bot.on('presenceUpdate', (member) => {
 bot.on('voiceChannelJoin', (member,nc) => {
   var filename = null;
   if (member.id == '191009347004792832'){
-  filename = "https://dl42.y2mate.com/youtube/mp3/0/y2mate.com%20-%20john_cena_theme_short_best_quality_-LGHwFanLX4.mp3";
+    filename = "https://dl42.y2mate.com/youtube/mp3/0/y2mate.com%20-%20john_cena_theme_short_best_quality_-LGHwFanLX4.mp3";
   } else if (member.id == '182305111685464064'){
     filename = "https://dl20.y2mate.com/youtube/mp3/3/y2mate.com%20-%20doot_doot_mr_skeltal_original_WTWyosdkx44.mp3";
   } else if (member.id == '177531707824668672'){
@@ -41,9 +42,7 @@ bot.on('voiceChannelJoin', (member,nc) => {
   filename = null;
   }
   if (filename != null) {
-    console.log(filename);
   bot.joinVoiceChannel(nc.id).then((connection) => {
-    console.log(filename);
             if(connection.playing) { // Stop playing if the connection is playing something
                 connection.stopPlaying();
             }
