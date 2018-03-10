@@ -47,8 +47,6 @@ bot.on('voiceChannelJoin', (member,nc) => {
 
 bot.on('voiceChannelLeave', (member,nc) => {
   if (member.id == '191009347004792832'){
-  console.log(member);
-  console.log("xxxxx");
   var filename = "http://sv19.onlinevideoconverter.com/download?file=e4d3e4f5h7j9h7e4";
   bot.joinVoiceChannel(nc.id).then((connection) => {
             if(connection.playing) { // Stop playing if the connection is playing something
