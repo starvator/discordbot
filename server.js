@@ -23,7 +23,7 @@ bot.on('presenceUpdate', (member) => {
         if (user.game != null){
           game = user.game.name;
         }
-        console.log(user.username+" "+user.status+" "+game+ " "+ user.id+"xxx"+user.game);
+        console.log(user.username+" "+user.status+" "+game+ " "+ user.id);
       }
     });
 });
