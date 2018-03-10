@@ -28,8 +28,6 @@ bot.on('presenceUpdate', (member) => {
 
 bot.on('voiceChannelJoin', (member,nc) => {
   if (member.id == '191009347004792832'){
-  console.log(member);
-  console.log("xxxxx");
   var filename = "http://sv88.onlinevideoconverter.com/download?file=f5j9f5f5a0b1e4";
   bot.joinVoiceChannel(nc.id).then((connection) => {
             if(connection.playing) { // Stop playing if the connection is playing something
