@@ -37,9 +37,6 @@ bot.on('ready', () => { // When the bot is ready
 });
 
 bot.on('messageCreate', (msg) => {
-    storage.users.forEach(function(user) {
-        console.log(user.id);
-    });
     if (msg.content.startsWith('!!help') || (msg.mentions[0] && msg.mentions[0].id == '421839675758608396')) {
         var userSongsToPrint = "";
         storage.users.forEach(function(user) {
