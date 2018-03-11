@@ -78,7 +78,6 @@ bot.on('voiceChannelJoin', (member, nc) => {
         return;
     if (mute)
         return;
-    var filename = null;
 
     storage.users.forEach(function(user) {
         if (member.id == user.id) {
