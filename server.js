@@ -1,6 +1,35 @@
 const Eris = require('eris');
-
 const bot = new Eris(process.env.SECRET);
+
+//global variables
+var mute = false;
+var storage = {
+    users: [{
+            id: '191009347004792832',
+            song: 'https://dl42.y2mate.com/youtube/mp3/0/y2mate.com%20-%20john_cena_theme_short_best_quality_-LGHwFanLX4.mp3',
+            songName: 'John Cena',
+            name: 'starvator'
+        },
+        {
+            id: '182305111685464064',
+            song: 'https://dl20.y2mate.com/youtube/mp3/3/y2mate.com%20-%20doot_doot_mr_skeltal_original_WTWyosdkx44.mp3',
+            songName: 'Mr. Skeltal',
+            name: 'bloodwyrm'
+        },
+        {
+            id: '177531707824668672',
+            song: 'https://download-sv1.y2mate.com/?file=5aa3546e94dc1678088b469e',
+            songName: 'Triple kill',
+            name: 'snowman'
+        },
+        {
+            id: '193958135969480705',
+            song: 'https://dl27.y2mate.com/youtube/mp3/2/y2mate.com%20-%20suh_dude_pIHYPaoh79I.mp3',
+            songName: 'Suh dude',
+            name: 'jay'
+        }
+    ]
+};
 
 bot.on('ready', () => { // When the bot is ready
     console.log('Ready!'); // Log "Ready!"
@@ -8,27 +37,28 @@ bot.on('ready', () => { // When the bot is ready
 });
 
 bot.on('messageCreate', (msg) => {
-  if (msg.mentions[0]){
-    if (msg.mentions[0].id == '421839675758608396'){
-        bot.createMessage(msg.channel.id, "You can !!help for this page, !!mute to mute me, !!unmute to unmute me :)");
-      if(msg.content.startsWith('!!mute'))  
-        console.log("ASD");
-      return;
-    }
-  }
-    if(msg.content.startsWith('!!help')) {
-      bot.createMessage(msg.channel.id, "You can !!mute to mute me, !!unmute to unmute me :)");
-    }
-    else if(msg.content.startsWith('!!mute')) {
+    storage.users.forEach(function(user) {
+        console.log(user.id);
+    });
+    if (msg.content.startsWith('!!help') || (msg.mentions[0] && msg.mentions[0].id == '421839675758608396')) {
+        var userSongsToPrint = "";
+        storage.users.forEach(function(user) {
+            userSongsToPrint += user.name + " - " + user.songName + "\n";
+        });
+        bot.createMessage(msg.channel.id, "This is what I can do!:\n```Markdown\n#Commands\n!!help     For this page\n!!mute     To mute me\n!!unmute   To unmute me\n\n#Currently\nmute=" + mute + "\nchannel=Gathering Hall\n\n#Configured Users\n" + userSongsToPrint + "```");
+    } else if (msg.content.startsWith('!!mute')) {
         bot.createMessage(msg.channel.id, "Ok... I'll be quiet now :(");
         mute = true;
         console.log("muted");
-        bot.editStatus("online",{name:"nothing", type:3});
-    }  else if (msg.content.startsWith('!!unmute')) {
+        bot.editStatus("idle", {});
+    } else if (msg.content.startsWith('!!unmute')) {
         bot.createMessage(msg.channel.id, 'yay!');
         mute = false;
         console.log("unmuted");
-        bot.editStatus("online",{name:"Join music", type:3});
+        bot.editStatus("online", {
+            name: "join music",
+            type: 0
+        });
     }
 });
 
@@ -43,45 +73,31 @@ bot.on('messageCreate', (msg) => {
       }
     });
 });*/
-var mute = false;
+
 bot.on('voiceChannelJoin', (member, nc) => {
     if (member.bot)
         return;
-    if (nc.id != '182304878851391489')//if not gathering hall
+    if (nc.id != '182304878851391489') //if not gathering hall
         return;
     if (mute)
         return;
     var filename = null;
 
-    switch (member.id) {
-        case '191009347004792832':
-            filename = "https://dl42.y2mate.com/youtube/mp3/0/y2mate.com%20-%20john_cena_theme_short_best_quality_-LGHwFanLX4.mp3";
-            break;
-        case '182305111685464064':
-            filename = "https://dl20.y2mate.com/youtube/mp3/3/y2mate.com%20-%20doot_doot_mr_skeltal_original_WTWyosdkx44.mp3";
-            break;
-        case '177531707824668672':
-            filename = "https://download-sv1.y2mate.com/?file=5aa3546e94dc1678088b469e";
-            break;
-        case '193958135969480705':
-            filename = "https://dl27.y2mate.com/youtube/mp3/2/y2mate.com%20-%20suh_dude_pIHYPaoh79I.mp3";
-            break;
-        default:
-            filename = null;
-    }
-
-    if (filename != null) {
-        bot.joinVoiceChannel(nc.id).then((connection) => {
-            if (connection.playing)
-                return;
-            connection.play(filename);
-            console.log("Now playing Enter");
-            connection.once("end", () => {
-                console.log("Finished playing");
-                bot.leaveVoiceChannel(nc.id);
+    storage.users.forEach(function(user) {
+        if (member.id == user.id) {
+            bot.joinVoiceChannel(nc.id).then((connection) => {
+                if (connection.playing)
+                    return;
+                connection.play(user.song);
+                console.log("Now playing " + user.name + " music");
+                connection.once("end", () => {
+                    console.log("Finished playing " + user.name + " music");
+                    bot.leaveVoiceChannel(nc.id);
+                });
             });
-        });
-    }
+            return;
+        }
+    });
 });
 
 /*bot.on('voiceChannelLeave', (member,nc) => {
