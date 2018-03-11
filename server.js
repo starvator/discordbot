@@ -42,7 +42,7 @@ bot.on('messageCreate', (msg) => {
         storage.users.forEach(function(user) {
             userSongsToPrint += user.name + " - " + user.songName + "\n";
         });
-        bot.createMessage(msg.channel.id, "This is what I can do!:\n```Markdown\n#Commands\n!!help     For this page\n!!mute     To mute me\n!!unmute   To unmute me\n\n#Currently\nmute=" + mute + "\nchannel=Gathering Hall\n\n#Configured Users\n" + userSongsToPrint + "```");
+        bot.createMessage(msg.channel.id, "This is what I can do!:\n```Markdown\n#Commands\n!!help     For this page\n!!mute     To mute me\n!!unmute   To unmute me\n!!restart  To restart the bot if it glitches out\n\n#Currently\nmute=" + mute + "\nchannel=Gathering Hall\n\n#Configured Users\n" + userSongsToPrint + "```");
     } else if (msg.content.startsWith('!!mute')) {
         bot.createMessage(msg.channel.id, "Ok... I'll be quiet now :(");
         mute = true;
@@ -53,6 +53,14 @@ bot.on('messageCreate', (msg) => {
         mute = false;
         console.log("unmuted");
         bot.editStatus("online", {
+            name: "join music",
+            type: 0
+        });
+    } else if (msg.content.startsWith('!!restart')) {
+      bot.leaveVoiceChannel('182304878851391489');
+      mute = false;
+      bot.createMessage(msg.channel.id, "Bot restarted.");
+      bot.editStatus("online", {
             name: "join music",
             type: 0
         });
