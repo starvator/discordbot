@@ -57,10 +57,10 @@ bot.on('messageCreate', (msg) => {
             type: 0
         });
     } else if (msg.content.startsWith('!!restart')) {
-      bot.leaveVoiceChannel('182304878851391489');
-      mute = false;
-      bot.createMessage(msg.channel.id, "Bot restarted.");
-      bot.editStatus("online", {
+        bot.leaveVoiceChannel('182304878851391489');
+        mute = false;
+        bot.createMessage(msg.channel.id, "Bot restarted.");
+        bot.editStatus("online", {
             name: "join music",
             type: 0
         });
